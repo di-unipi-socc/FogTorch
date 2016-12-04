@@ -76,20 +76,13 @@ public class Search {
     public Deployment findDeployments(boolean exhaustive) {
         Deployment deployment = new Deployment();
         
+        //System.out.println(A.S);
+        findCompatibleNodes();
         Collections.sort(A.S, (Object o1, Object o2) -> {
             SoftwareComponent s1 = (SoftwareComponent) o1;
             SoftwareComponent s2 = (SoftwareComponent) o2;
-            return Double.compare(
-                    s2.getHardwareRequirements().ram/8 +
-                    s2.getHardwareRequirements().cores/8 +
-                    s2.getHardwareRequirements().storage/500 ,
-                    
-                    s1.getHardwareRequirements().ram/8 +
-                            s1.getHardwareRequirements().cores/8 +
-                            s1.getHardwareRequirements().storage/500);
-        });       
-        System.out.println(A.S);
-        findCompatibleNodes();
+            return Integer.compare(K.get(s1.getId()).size(), K.get(s2.getId()).size());             
+        });
         
         if (exhaustive)
             exhaustiveSearch(deployment);
