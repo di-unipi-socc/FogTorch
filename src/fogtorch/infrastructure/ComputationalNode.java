@@ -76,7 +76,7 @@ public abstract class ComputationalNode implements Comparable{
     
     public boolean isReachable(String t, Infrastructure I, QoSProfile q) {
         boolean reach = false;
-        if (I.L.containsKey(new Couple(this.getId(), t))){
+        if (I.L.containsKey(new Couple<String,String>(this.getId(), t))){
             
             QoSProfile q1 = I.L.get(new Couple(this.getId(), t));
             QoSProfile q2 = I.L.get(new Couple(t, this.getId()));
