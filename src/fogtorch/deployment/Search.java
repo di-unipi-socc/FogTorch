@@ -83,6 +83,7 @@ public class Search {
                     s2.getHardwareRequirements().ram/8 +
                     s2.getHardwareRequirements().cores/8 +
                     s2.getHardwareRequirements().storage/500 ,
+                    
                     s1.getHardwareRequirements().ram/8 +
                             s1.getHardwareRequirements().cores/8 +
                             s1.getHardwareRequirements().storage/500);
