@@ -22,3 +22,10 @@ If you wish to reuse source code in this repo, please cite the above mentioned p
 			 
 }
 ```
+
+# A brief intro to FogTorch
+
+FogTorch inputs the specification of a Fog infrastructure ```I``` along processing (CPU cores, RAM, storage) and QoS (latency, bandwidth) capabilities, and the specification of an application ```A``` to be deployed, along with needed IoT devices, processing (CPU cores, RAM, storage) and QoS (latency, bandwidth) requirements.
+
+The output is either one or all eligible deployments of ```A``` on ```I``` that meet all processing and QoS constraints.
+
