@@ -8,7 +8,7 @@ FogTorch is based upon the formal model described in
 > **QoS-aware Deployment of IoT Applications Through the Fog.** <br>
 > Technical Report, Dept. of Computer Science, University of Pisa, Italy
 
-If you wish to reuse source code in this repo, please cite the above mentioned paper. The appropriate BibTex is reported below:
+If you wish to reuse source code in this repo, please cite the above mentioned technical report. The appropriate BibTex is reported below:
 
 ```
 @book{fogtorch,
