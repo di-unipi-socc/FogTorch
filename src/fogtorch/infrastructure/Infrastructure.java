@@ -5,8 +5,6 @@
  */
 package fogtorch.infrastructure;
 
-import fogtorch.application.SoftwareComponent;
-import fogtorch.deployment.Deployment;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -57,12 +55,6 @@ public class Infrastructure {
                     QoSProfile r2 = L.get(new Couple(fogNode2, fogNode));
                     L.put(new Couple(fogNode2,identifier), r2);
                 }
-                if(C.containsKey(fogNode2) && !fogNode2.equals(fogNode)){  
-                    QoSProfile r = L.get(l);
-                    L.put(new Couple(identifier, fogNode2), r);
-                    QoSProfile r2 = L.get(new Couple(fogNode2, fogNode));
-                    L.put(new Couple(fogNode2,identifier), r2);
-                }
             }
         } 
         addLink(identifier, fogNode, 0, Double.MAX_VALUE);
@@ -88,66 +80,6 @@ public class Infrastructure {
     public void addLink(String a, String b, QoSProfile downlinkba, QoSProfile uplinkab) { //q1 dwn uplinkab upl
         L.put(new Couple(b,a), downlinkba);
         L.put(new Couple(a,b), uplinkab);
-    }
-    
-    public Couple<Double, Double> consumedResources(Deployment d){
-        
-        Couple<Double, Double> consumedResources = new Couple(0.0,0.0);
-        Couple<Double, Double> allResources = new Couple(0.0,0.0);
-        
-        for (FogNode g : F.values()){
-                allResources.setA(g.getHardware().ram + allResources.getA());
-                allResources.setB(g.getHardware().storage + allResources.getB());
-                
-        }
-        
-        for (SoftwareComponent s: d.keySet()){
-            if (F.containsKey(d.get(s).getId())){
-                FogNode f = (FogNode) d.get(s); 
-                Couple<Double, Double> tmp = f.consumedResources(s);
-                
-                consumedResources.setA(tmp.getA() + consumedResources.getA());
-                consumedResources.setB(tmp.getB() + consumedResources.getB());
-            }
-        }
-        
-        return new Couple(consumedResources.getA()/allResources.getA(),
-                            consumedResources.getB()/allResources.getB());
-    }
-    
-    public Couple<Double, Double> consumedResources(Deployment d, List<String> nodes){
-        
-        Couple<Double, Double> consumedResources = new Couple(0.0,0.0);
-        Couple<Double, Double> allResources = new Couple(0.0,0.0);
-        
-        for (FogNode g : F.values()){
-            if(nodes.contains(g.getId())){
-                allResources.setA(g.getHardware().ram+allResources.getA());
-                allResources.setB(g.getHardware().storage + allResources.getB());
-            }
-        }
-        
-        for (SoftwareComponent s: d.keySet()){
-            ComputationalNode m = d.get(s);
-            if (F.containsKey(m.getId()) && nodes.contains(m.getId())){
-                //update consumed resources
-                FogNode f = (FogNode) d.get(s);
-                Couple<Double, Double> tmp = f.consumedResources(s);
-                consumedResources.setA(tmp.getA() + consumedResources.getA());
-                consumedResources.setB(tmp.getB() + consumedResources.getB());
-            }
-        }
-        double consumed1, consumed2;
-        if(allResources.getA() != 0)
-             consumed1 = consumedResources.getA()/allResources.getA();
-        else 
-            consumed1 = 0.0;
-        
-        if (allResources.getB() != 0)
-            consumed2 = consumedResources.getB()/allResources.getB();
-        else
-            consumed2 = 0.0;
-            return new Couple(consumed1, consumed2);
     }
 
     @Override

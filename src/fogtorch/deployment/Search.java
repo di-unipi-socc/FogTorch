@@ -19,6 +19,7 @@ import fogtorch.utils.Couple;
 import fogtorch.infrastructure.ComputationalNode;
 import fogtorch.utils.QoSProfile;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class Search {
@@ -27,22 +28,18 @@ public class Search {
     private Infrastructure I;
     private HashMap<String, ArrayList<ComputationalNode>> K;
     private HashMap<String, HashSet<String>> businessPolicies;
-    //private ArrayList<String> keepLight;
     int steps;
     public ArrayList<Deployment> D;
-   // public Coordinates deploymentLocation;
 
-    public Search(Application A, Infrastructure I) { //, Coordinates deploymentLocation
+    public Search(Application A, Infrastructure I) {
         this.A = A;
         this.I = I;
         K = new HashMap<>();
         D = new ArrayList<>();
         businessPolicies = new HashMap<String, HashSet<String>>();
-        //keepLight = new ArrayList<>();
         for (SoftwareComponent s: A.S){
              K.put(s.getId(), new ArrayList<>());
         }
-        //this.deploymentLocation = deploymentLocation;
     }
 
     private boolean findCompatibleNodes() {
@@ -51,7 +48,6 @@ public class Search {
                 if (n.isCompatible(s) && checkThings(s, n)
                         && ((businessPolicies.containsKey(s.getId()) && businessPolicies.get(s.getId()).contains(n.getId()))
                         || !businessPolicies.containsKey(s.getId()))) {
-                  
                     K.get(s.getId()).add(n);
                 }
             }
@@ -138,7 +134,7 @@ public class Search {
             return;
         }
         SoftwareComponent s = selectUndeployedComponent(deployment);
-        System.out.println("Selected :" + s);
+        //System.out.println("Selected :" + s);
         ArrayList<ComputationalNode> Ks = bestFirst(K.get(s.getId()),s);
         //System.out.println(K.get(s.getId()));
         for (ComputationalNode n : Ks) { // for all nodes compatible with s 
@@ -157,7 +153,7 @@ public class Search {
     
     private ArrayList<ComputationalNode> bestFirst(ArrayList<ComputationalNode> Ks, SoftwareComponent s) {
         for (ComputationalNode n : Ks) {
-            n.computeHeuristic(s);//, this.deploymentLocation);
+            n.computeHeuristic(s);
         }
         Collections.sort(Ks);
         return Ks;
@@ -179,6 +175,11 @@ public class Search {
                     QoSProfile off2 = I.L.get(c2);
                     
                     if (!off1.supports(req1) || !off2.supports(req2)) {
+//                        System.out.println("It does not support QoS... ");
+//                        System.out.println(c1 + " Offered1 "+off1);
+//                        System.out.println(couple1 + "Requirement1 " + req1);
+//                        System.out.println(c2 +" Offered2 " + off2);
+//                        System.out.println(couple2 + "Required2 "+ req2);
                         return false;
                     }
                 } else {
@@ -212,14 +213,14 @@ public class Search {
 
         for (ThingRequirement t : s.Theta) {
             ExactThing e = (ExactThing) t;
-            if (n.isReachable(e.getId(), I, e.getQNodeThing(), e.getQThingNode())) {
-                Couple c1 = new Couple(n.getId(), e.getId()); //c1 nodeThing
+            if (n.isReachable(e.getId(), I, e.getQ())) {
+                Couple c1 = new Couple(n.getId(), e.getId());
 
                 QoSProfile pl1 = I.L.get(c1);
                 QoSProfile pl2 = I.L.get(new Couple(e.getId(), n.getId()));
 
-                pl1.setBandwidth(pl1.getBandwidth() - e.getQNodeThing().getBandwidth());
-                pl2.setBandwidth(pl2.getBandwidth() - e.getQThingNode().getBandwidth());
+                pl1.setBandwidth(pl1.getBandwidth() - e.getQ().getBandwidth());
+                pl2.setBandwidth(pl2.getBandwidth() - e.getQ().getBandwidth());
 
             }
         }
@@ -227,11 +228,12 @@ public class Search {
 
     private boolean checkThings(SoftwareComponent s, ComputationalNode n) {
         //System.out.println("Checking things for "+ s.getId() + " -- " + n);
+
         for (ThingRequirement r : s.getThingsRequirements()) {
             //System.out.println(s.getId() + " " + r.toString());
             if (r.getClass() == ExactThing.class) {
                 ExactThing e = (ExactThing) r;
-                if (!n.isReachable(e.getId(), I, e.getQNodeThing(), e.getQThingNode())) { // directly or remotely
+                if (!n.isReachable(e.getId(), I, r.getQ())) { // directly or remotely
                     //System.out.println("Not reachable "+e.getId() +" from " + n.getId());
                     return false;
                 }
@@ -266,23 +268,23 @@ public class Search {
         for (ThingRequirement t : s.Theta) {
             ExactThing e = (ExactThing) t;
             //System.out.println("Request" + e);
-            if (n.isReachable(e.getId(), I, e.getQNodeThing(), e.getQThingNode())) {
+            if (n.isReachable(e.getId(), I, e.getQ())) {
                 Couple c1 = new Couple(n.getId(), e.getId());
 
                 QoSProfile pl1 = I.L.get(c1);
                 QoSProfile pl2 = I.L.get(new Couple(e.getId(), n.getId()));
 
-                pl1.setBandwidth(pl1.getBandwidth() + e.getQNodeThing().getBandwidth());
-                pl2.setBandwidth(pl2.getBandwidth() + e.getQThingNode().getBandwidth());
+                pl1.setBandwidth(pl1.getBandwidth() + e.getQ().getBandwidth());
+                pl2.setBandwidth(pl2.getBandwidth() + e.getQ().getBandwidth());
 
             }
         }
     }
 
     private boolean isValid(Deployment deployment, SoftwareComponent s, ComputationalNode n) {
-        //System.out.println(n.getId() + " is Compatible " + n.isCompatible(s)  );
-        //System.out.println(n.getId() + " links " + checkLinks(deployment, s, n)  );
-        //System.out.println(n.getId() + " things " + checkThings(s, n));
+//        System.out.println(n.getId() + " is Compatible " + n.isCompatible(s)  );
+//        System.out.println(n.getId() + " links " + checkLinks(deployment, s, n)  );
+//        System.out.println(n.getId() + " things " + checkThings(s, n));
         return n.isCompatible(s) && checkLinks(deployment, s, n) && checkThings(s, n);
     }
 
@@ -315,18 +317,6 @@ public class Search {
         HashSet<String> policies = new HashSet<>();
         policies.addAll(allowedNodes);
         this.businessPolicies.put(component, policies);
-    }
-    
-    public void addKeepLightNodes(List<String> keepLightNodes) {
-        for (String n : keepLightNodes){
-            if (I.C.containsKey(n)){
-                I.C.get(n).setKeepLight(true);
-            }
-            if(I.F.containsKey(n)){
-                I.F.get(n).setKeepLight(true);
-            }
-                
-        }
     }
 
     

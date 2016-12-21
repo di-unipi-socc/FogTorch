@@ -12,27 +12,13 @@ import fogtorch.utils.QoSProfile;
  * @author stefano
  */
 public abstract class ThingRequirement {
-    private QoSProfile qThingNode;
-    private QoSProfile qNodeThing;
+    private QoSProfile q;
     
-    public void ThingRequirement(QoSProfile qNodeThing , QoSProfile qThingNode ) {
-        this.qThingNode = qThingNode;
-        this.qNodeThing = qNodeThing;
-    }
-    
-    public QoSProfile getQThingNode() {
-        return qThingNode;
+    public void setQ(QoSProfile q) {
+        this.q = q;
     }
 
-    public QoSProfile getQNodeThing() {
-        return qNodeThing;
-    }
-    
-    public void setQThingNode(QoSProfile qThingNode ) {
-       this.qThingNode = qThingNode;
-    }
-
-    public void setQNodeThing(QoSProfile qNodeThing) {
-        this.qNodeThing = qNodeThing;   
+    public QoSProfile getQ() {
+        return q;
     }
 }

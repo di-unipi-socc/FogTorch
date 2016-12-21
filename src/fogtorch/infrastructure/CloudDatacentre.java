@@ -19,7 +19,6 @@ public class CloudDatacentre extends ComputationalNode {
         super.setId(identifier);
         super.setSoftware(software);
         super.setCoordinates(x,y);
-        super.setKeepLight(false);
     }
 
     @Override
@@ -46,12 +45,9 @@ public class CloudDatacentre extends ComputationalNode {
     }
     
     @Override
-    public double computeHeuristic(SoftwareComponent s) { //, Coordinates deploymentLocation
-        this.heuristic = 4;//+ 1/(deploymentLocation.distance(this.getCoordinates()));
+    public double computeHeuristic(SoftwareComponent s) {
+        this.heuristic = 1;
         //System.out.println(this.getId() + " " + this.heuristic);
-        if (super.getKeepLight()){
-            this.heuristic = 0;
-        }
         return heuristic;
     }
     
