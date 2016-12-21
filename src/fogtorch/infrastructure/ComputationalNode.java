@@ -22,6 +22,8 @@ public abstract class ComputationalNode implements Comparable{
     private ArrayList<String> software;
     private Coordinates coords;
     public double heuristic;
+    private boolean keepLight;
+
     
     public void setSoftware(Collection<String> software){
         this.software = new ArrayList<>(software);
@@ -29,6 +31,14 @@ public abstract class ComputationalNode implements Comparable{
     
     public ArrayList<String> getSoftware(){
         return this.software;
+    }
+    
+    public void setKeepLight(boolean kl){
+        this.keepLight = kl;
+    }
+    
+    public boolean getKeepLight(){
+        return this.keepLight;
     }
     
     public String getId(){
@@ -57,7 +67,7 @@ public abstract class ComputationalNode implements Comparable{
      
     public abstract void undeploy(SoftwareComponent s);
     
-    public abstract double computeHeuristic(SoftwareComponent s);
+    public abstract double computeHeuristic(SoftwareComponent s); //, Coordinates deploymentLocation
     
     @Override
     public boolean equals(Object o){
@@ -74,13 +84,14 @@ public abstract class ComputationalNode implements Comparable{
         return hash;
     }
     
-    public boolean isReachable(String t, Infrastructure I, QoSProfile q) {
+    public boolean isReachable(String t, Infrastructure I, QoSProfile qNodeThing, QoSProfile qThingNode) {
         boolean reach = false;
+        
         if (I.L.containsKey(new Couple<String,String>(this.getId(), t))){
             
-            QoSProfile q1 = I.L.get(new Couple(this.getId(), t));
-            QoSProfile q2 = I.L.get(new Couple(t, this.getId()));
-            reach = q1.supports(q) && q2.supports(q);
+            QoSProfile q1 = I.L.get(new Couple(this.getId(), t)); //nodeThing
+            QoSProfile q2 = I.L.get(new Couple(t, this.getId())); //thingNode
+            reach = q1.supports(qNodeThing) && q2.supports(qThingNode);
             //System.out.println(new Couple(this.getId(), t) + " "+ reach);
         }
         

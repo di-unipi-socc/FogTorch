@@ -22,11 +22,12 @@ public class FTApplication {
     public static Application createApplication(){
         Application A = new Application();
         ArrayList<ThingRequirement> fireThings = new ArrayList<>();
-        QoSProfile q = new QoSProfile(10, 1);
+        QoSProfile qThingNode = new QoSProfile(10, 1);
+        QoSProfile qNodeThing = new QoSProfile(10, 1);
         
                 
-        fireThings.add(new ExactThing("fire1", q));
-        fireThings.add(new ExactThing("extinguisher1", q));
+        fireThings.add(new ExactThing("fire1", qNodeThing, qThingNode));
+        fireThings.add(new ExactThing("extinguisher1", qNodeThing, qThingNode));
 
         //components
         A.addComponent("mlengine", asList("mySQL",".NETcore"), new Hardware(0, 2, 0));

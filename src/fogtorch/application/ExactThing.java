@@ -14,9 +14,10 @@ import fogtorch.utils.QoSProfile;
 public class ExactThing extends ThingRequirement{
     private String id;
 
-    public ExactThing(String type, QoSProfile q) {
+    public ExactThing(String type, QoSProfile qNodeThing, QoSProfile qThingNode) {
         this.id = type;
-        super.setQ(q);
+        super.setQNodeThing(qNodeThing);
+        super.setQThingNode(qThingNode);
     }
     
     public String getId(){
@@ -24,6 +25,6 @@ public class ExactThing extends ThingRequirement{
     }
 
     public String toString(){
-        return "(" + id + ", "+super.getQ()+")";
+        return "(" + id + ", "+super.getQNodeThing()+ " " + super.getQThingNode()+")" ;
     }
 }

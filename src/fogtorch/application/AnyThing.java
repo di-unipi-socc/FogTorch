@@ -21,7 +21,7 @@ public class AnyThing extends ThingRequirement{
         this.type = type;
         coord = new Coordinates(x,y);
         this.maxDist = maxDist;
-        super.setQ(q);
+        //super.setQ(q);
     }
 
     

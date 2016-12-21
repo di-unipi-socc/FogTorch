@@ -10,6 +10,10 @@ import java.util.Collection;
 import java.util.HashSet;
 import fogtorch.application.SoftwareComponent;
 import fogtorch.application.ThingRequirement;
+import fogtorch.deployment.Deployment;
+import fogtorch.utils.Constants;
+import fogtorch.utils.Coordinates;
+import fogtorch.utils.Couple;
 import fogtorch.utils.Hardware;
 
 /**
@@ -26,12 +30,15 @@ public class FogNode extends ComputationalNode{
         super.setSoftware(software);
         super.setCoordinates(x,y);
         connectedThings = new HashSet<>();
+        super.setKeepLight(false);
     }
 
 
     public void setHardware(Hardware h){
        hw = new Hardware(h);
     }
+    
+
     
     public Hardware getHardware(){
         return hw;
@@ -71,20 +78,39 @@ public class FogNode extends ComputationalNode{
     public double distance(Thing t) {
         return t.getCoordinates().distance(super.getCoordinates());
     }
+    
+    /**
+     * Returns a couple with the percentage of used RAM and storage at
+     * this Fog node.
+     * @param d a deployment
+     * @return a couple with the percentage of used RAM and storage.
+     */
+    public Couple<Double, Double> consumedResources(SoftwareComponent s){
+        Couple<Double,Double> result = new Couple<>(0.0,0.0);
+  
+        Hardware used = s.getHardwareRequirements();
+        result.setA(result.getA() + used.ram);
+        result.setB(result.getB() + used.storage);
 
-    @Override
-    public double computeHeuristic(SoftwareComponent s) {
-        this.heuristic = this.hw.cores/8 + this.hw.ram/8 + this.hw.storage/500;
+        //result.setA(result.getA()/this.getHardware().ram);
+        //result.setB(result.getB()/this.getHardware().storage);
         
-        for( ThingRequirement r: s.getThingsRequirements()){
-            ExactThing e = (ExactThing) r;
-            if (this.connectedThings.contains(e.getId())){
-                heuristic++;
-            }
-        }
-        return heuristic;
+        return result;
     }
 
+    @Override
+    public double computeHeuristic(SoftwareComponent s) { //Coordinates deploymentLocation
+        
+        this.heuristic = this.hw.cores/Constants.MAX_CORES + 
+                this.hw.ram/Constants.MAX_RAM + 
+                this.hw.storage/Constants.MAX_HDD; //+ 1/(deploymentLocation.distance(this.getCoordinates()));
+        
+        if (this.getKeepLight()){
+            heuristic = heuristic - 4;
+        }
 
-    
+        return heuristic;
+    }
 }
+
+
