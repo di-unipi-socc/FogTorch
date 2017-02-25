@@ -1,6 +1,6 @@
-![alt tag](https://github.com/di-unipi-socc/FogTorch/blob/master/img/logo.png)
+<img src="https://github.com/di-unipi-socc/FogTorch/blob/master/img/logoft.PNG" width="300">
 
-A tool for QoS-aware deployment of IoT applications through the Fog. 
+_A tool for QoS-aware deployment of IoT applications through the Fog._
 
 FogTorch is based upon the formal model described in
 
