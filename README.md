@@ -6,21 +6,23 @@ FogTorch is based upon the formal model described in
 
 > Antonio Brogi and Stefano Forti <br>
 > **QoS-aware Deployment of IoT Applications Through the Fog.** <br>
-> Technical Report, Dept. of Computer Science, University of Pisa, Italy
+>  in _IEEE Internet of Things Journal_ , vol.PP, no.99, 2017
 
 If you wish to reuse source code in this repo, please cite the above mentioned technical report. The appropriate BibTex is reported below:
 
 ```
-@book{fogtorch,
-          author = {Antonio Brogi and Stefano Forti},
-          volume = {Technical Report},
-          title = {QoS-aware Deployment of IoT Applications Through the Fog},
-          publisher = {University of Pisa},
-          month = {November},
-          year = {2016},
-          url = {http://eprints.adm.unipi.it/2362}
-			 
-}
+@article{fogtorch, 
+	author={A. Brogi and S. Forti}, 
+	journal={IEEE Internet of Things Journal}, 
+	title={QoS-aware Deployment of IoT Applications Through the Fog}, 
+	year={2017}, 
+	volume={PP}, 
+	number={99}, 
+	pages={1-1}, 
+	keywords={IoT;QoS-aware deployment;fog computing}, 
+	doi={10.1109/JIOT.2017.2701408}, 
+	ISSN={2327-4662}, 
+	month={}}
 ```
 
 # A brief intro to FogTorch
