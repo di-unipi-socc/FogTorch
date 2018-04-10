@@ -6,7 +6,7 @@ FogTorch is based upon the formal model described in
 
 > Antonio Brogi and Stefano Forti <br>
 > [**QoS-aware Deployment of IoT Applications Through the Fog.**](http://ieeexplore.ieee.org/document/7919155/) <br>
->  in _IEEE Internet of Things Journal_ , vol.PP, no.99, 2017
+>  in _IEEE Internet of Things Journal_ , vol. 4, no. 5, pp. 1185-1192, Oct. 2017.
 
 If you wish to reuse source code in this repo, please cite the above mentioned technical report. The appropriate BibTex is reported below:
 
